@@ -12,10 +12,8 @@ const About = () => {
         { method: "GET" }
       );
       const data = await res.json();
-      const page_content = data?.data
-        ? data?.data[0]?.content.page_content
-        : null;
-      setContent(page_content);
+
+      setContent(data);
     };
 
     getData();
@@ -23,18 +21,8 @@ const About = () => {
 
   return (
     <section className="w-full">
-      {content ? (
-        content.map((item, index) => {
-          // console.log(item.text_content);
-          return (
-            <div key={index} className="mb-20">
-              <div
-                dangerouslySetInnerHTML={{ __html: item.text_content }}
-                className="pt-2"
-              />
-            </div>
-          );
-        })
+      {content?.data ? (
+        <div>{content.data[0]?.content.page_content}</div>
       ) : (
         <div className="flex-center">
           <h1 className="text-3xl">No content available</h1>
