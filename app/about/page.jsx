@@ -1,28 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import useFetchData from "@utils/hooks/useFetchData";
 
 const About = () => {
-  const [content, setContent] = useState(null);
+  const { data: content, error } = useFetchData(
+    "https://www.zesty.io/-/instant/7-e93178-vqvclg.json"
+  );
 
-  useEffect(() => {
-    const getData = async () => {
-      const res = await fetch(
-        "https://www.zesty.io/-/instant/7-e93178-vqvclg.json",
-        { method: "GET" }
-      );
-      const data = await res.json();
+  if (error) {
+    return <h1 className="text-3xl">Error loading data</h1>;
+  }
 
-      setContent(data);
-    };
-
-    getData();
-  }, []);
+  const pageContent = content?.data?.[0]?.content?.page_content;
 
   return (
     <section className="w-full">
-      {content?.data ? (
-        <div>{content.data[0]?.content.page_content}</div>
+      {pageContent ? (
+        <div>{pageContent}</div>
       ) : (
         <div className="flex-center">
           <h1 className="text-3xl">No content available</h1>
